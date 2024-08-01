@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -13,6 +13,22 @@ export class AuthService {
   async createUser(
     createUserData: CreateUserDto,
   ): Promise<{ message: string; token: string }> {
+    const isAnyUserExistWithThisPhoneNumber =
+      await this.UserRepository.findUserByPhoneNumber(
+        createUserData.phoneNumber,
+      );
+
+    if (isAnyUserExistWithThisPhoneNumber) {
+      throw new BadRequestException('there is a user with this phone number');
+    }
+
+    if (
+      createUserData.email &&
+      (await this.UserRepository.findUserByEmail(createUserData.email))
+    ) {
+      throw new BadRequestException('there is a user with this email');
+    }
+
     const user = await this.UserRepository.createUser(createUserData);
 
     const payload = {

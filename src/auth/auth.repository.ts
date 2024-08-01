@@ -14,4 +14,16 @@ export class UserRepository {
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
+
+  async findUserByPhoneNumber(phoneNumber: string): Promise<User | null> {
+    const user = this.userModel.findOne({ phoneNumber });
+
+    return user;
+  }
+
+  async findUserByEmail(email: string): Promise<User | null> {
+    const user = this.userModel.findOne({ email });
+
+    return user;
+  }
 }
