@@ -8,35 +8,19 @@ import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from './dtos/loginUser.dto';
 import * as bcrypt from 'bcryptjs';
-import { UserRepository } from 'src/users/users.repository';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly AuthRepository: AuthRepository,
-    private readonly UserRepository: UserRepository,
+    private readonly UsersService: UsersService,
     private readonly JwtService: JwtService,
   ) {}
 
   async createUser(
     createUserData: CreateUserDto,
   ): Promise<{ message: string; token: string }> {
-    const isAnyUserExistWithThisPhoneNumber =
-      await this.UserRepository.findUserByPhoneNumber(
-        createUserData.phoneNumber,
-      );
-
-    if (isAnyUserExistWithThisPhoneNumber) {
-      throw new BadRequestException('there is a user with this phone number');
-    }
-
-    if (
-      createUserData.email &&
-      (await this.UserRepository.findUserByEmail(createUserData.email))
-    ) {
-      throw new BadRequestException('there is a user with this email');
-    }
-
     const user = await this.AuthRepository.createUser(createUserData);
 
     const payload = {
@@ -54,13 +38,7 @@ export class AuthService {
 
   async loginUser(loginUserData: LoginUserDto) {
     const isAnyUserExistWithThisPhoneNumber =
-      await this.UserRepository.findUserByPhoneNumber(
-        loginUserData.phoneNumber,
-      );
-
-    if (!isAnyUserExistWithThisPhoneNumber) {
-      throw new UnauthorizedException('wrong phone number or password');
-    }
+      await this.UsersService.findUserByPhoneNumber(loginUserData.phoneNumber);
 
     const isPasswordCorrect = await bcrypt.compare(
       loginUserData.password,
