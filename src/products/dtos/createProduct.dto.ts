@@ -21,6 +21,7 @@ export class CreateProductDto {
   })
   description: string;
 
+  @Transform(({ value }) => Number(value))
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
     { message: 'price must be a number' },
@@ -32,5 +33,10 @@ export class CreateProductDto {
   })
   price: number;
 
-  image: File;
+  @ApiProperty({
+    type: File,
+    required: true,
+    description: 'upload single image in types `jpg | jpeg | png`',
+  })
+  image: string;
 }

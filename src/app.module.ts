@@ -5,9 +5,11 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RequestLoggerMiddleware } from './middlewares/request-logger/request-logger.middleware';
 import { ProductsModule } from './products/products.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({ rootPath: 'static' }),
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE, {
       autoIndex: true,
