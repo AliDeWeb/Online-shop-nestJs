@@ -5,6 +5,7 @@ import {
   MinLength,
   Matches,
 } from 'class-validator';
+import { iranPhoneNumberValidator } from 'src/utilities/regex/phoneNumbersRegex';
 
 export class CreateUserDto {
   @IsString({ message: 'password should be a string' })
@@ -12,7 +13,9 @@ export class CreateUserDto {
   password: string;
 
   @IsString({ message: 'phone number should be a string' })
-  @Matches(/^09[0-9]{9}$/, { message: 'provide a valid phone number' })
+  @Matches(iranPhoneNumberValidator, {
+    message: 'provide a valid phone number',
+  })
   phoneNumber: string;
 
   @IsString({ message: 'name should be a string' })
