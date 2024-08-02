@@ -4,14 +4,16 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { UserRepository } from './auth.repository';
+import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from './dtos/loginUser.dto';
 import * as bcrypt from 'bcryptjs';
+import { UserRepository } from 'src/users/users.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly AuthRepository: AuthRepository,
     private readonly UserRepository: UserRepository,
     private readonly JwtService: JwtService,
   ) {}
@@ -35,7 +37,7 @@ export class AuthService {
       throw new BadRequestException('there is a user with this email');
     }
 
-    const user = await this.UserRepository.createUser(createUserData);
+    const user = await this.AuthRepository.createUser(createUserData);
 
     const payload = {
       id: (user as any)._id,
