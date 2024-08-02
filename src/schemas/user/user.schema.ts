@@ -20,13 +20,20 @@ export class User {
     type: String,
     unique: true,
     required: [true, 'phone number is required'],
+    trim: true,
   })
   phoneNumber: string;
 
-  @Prop({ type: String })
+  @Prop({ type: String, trim: true, lowercase: true })
   name: string;
 
-  @Prop({ type: String, unique: true, sparse: true })
+  @Prop({
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+    lowercase: true,
+  })
   email: string;
 }
 

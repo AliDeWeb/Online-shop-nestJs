@@ -1,9 +1,11 @@
 import { IsString, Matches, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDto {
   @IsString({ message: 'phone number should be a string' })
   @Matches(/^09[0-9]{9}$/, { message: 'provide a valid phone number' })
+  @Transform(({ value }) => value.trim())
   @ApiProperty({
     minLength: 11,
     maxLength: 11,
@@ -15,6 +17,7 @@ export class LoginUserDto {
 
   @IsString({ message: 'password should be a string' })
   @MinLength(8, { message: 'password must be at least 8 characters long' })
+  @Transform(({ value }) => value.trim())
   @ApiProperty({
     minLength: 8,
     default: '12345678',
