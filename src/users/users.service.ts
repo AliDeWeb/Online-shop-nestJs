@@ -2,6 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRepository } from './users.repository';
 import { User } from 'src/schemas/user/user.schema';
 import { Schema } from 'mongoose';
+import { iranPhoneNumberValidator } from 'src/utilities/regex/phoneNumbersRegex';
+import { emailValidator } from 'src/utilities/regex/emailRegex';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +19,9 @@ export class UsersService {
   }
 
   async findUserByPhoneNumber(phoneNumber: string): Promise<User | null> {
+    if (!phoneNumber.match(iranPhoneNumberValidator))
+      throw new BadRequestException('phone number is not valid');
+
     const user = await this.UserRepository.findUserByPhoneNumber(phoneNumber);
 
     if (!user) {
@@ -27,6 +32,9 @@ export class UsersService {
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
+    if (!email.match(emailValidator))
+      throw new BadRequestException('email is not valid');
+
     const user = await this.UserRepository.findUserByEmail(email);
 
     if (!user) {

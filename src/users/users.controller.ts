@@ -1,14 +1,6 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Param,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ProtectedRouteGuard } from 'src/auth/guard/protectedRoute.guard';
-import { iranPhoneNumberValidator } from 'src/utilities/regex/phoneNumbersRegex';
 
 @Controller('users')
 export class UsersController {
@@ -28,9 +20,6 @@ export class UsersController {
 
   @Get('get-user-by-phone-number/:phoneNumber')
   async getUserByPhoneNumber(@Param('phoneNumber') phoneNumber: string) {
-    if (!phoneNumber.match(iranPhoneNumberValidator))
-      throw new BadRequestException('phone number is not valid');
-
     const user = await this.UsersService.findUserByPhoneNumber(phoneNumber);
 
     user['updatedAt'] = undefined;
@@ -42,9 +31,6 @@ export class UsersController {
 
   @Get('get-user-by-email/:email')
   async getUserByEmail(@Param('email') email: string) {
-    if (!email.match(emailValidator))
-      throw new BadRequestException('email is not valid');
-
     const user = await this.UsersService.findUserByEmail(email);
 
     user['updatedAt'] = undefined;
