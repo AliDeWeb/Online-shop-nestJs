@@ -1,9 +1,9 @@
 {
   "name": "beauty-house",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "Online shop nestJs project",
+  "author": "AliDeWeb",
+  "private": false,
   "license": "MIT",
   "scripts": {
     "build": "nest build",
