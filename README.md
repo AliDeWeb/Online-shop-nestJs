@@ -15,8 +15,18 @@ Enjoy using ❤
 1. install the latest version of nodeJs (LTS).
 2. install the latest version of mongodb community server and mongodb compass.
 3. clone the project on your local system.
-4. follow `Running the app` steps.
-5. to access API document, open `http://localhost:3000/docs` on your browser.
+4. create a `.env` file in root folder and set the `Environment Variables`.
+5. follow `Running the app` steps.
+6. to access API document, open `http://localhost:3000/docs` on your browser.
+
+## Environment Variables
+
+```env
+DATABASE={{Database Url}}
+
+JWT_SECRET={{JWT secret code}}
+JWT_EXPIRES_IN={{JWT expire time}}
+```
 
 ## Running the app
 
