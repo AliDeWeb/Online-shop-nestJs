@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   UnauthorizedException,
   Injectable,
 } from '@nestjs/common';
@@ -36,7 +35,7 @@ export class AuthService {
         token,
       };
     } catch (err) {
-      throw new BadRequestException('this user is already exist');
+      throw new UnauthorizedException('this user is already exist');
     }
   }
 
