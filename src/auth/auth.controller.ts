@@ -16,6 +16,10 @@ export class AuthController {
     description: 'response contains a message and a token',
   })
   @ApiResponse({
+    status: 400,
+    description: 'response contains a error message',
+  })
+  @ApiResponse({
     status: 401,
     description: 'response contains a error message',
   })
@@ -28,6 +32,10 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'response contains a message and a token',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'response contains a error message',
   })
   @ApiResponse({
     status: 401,

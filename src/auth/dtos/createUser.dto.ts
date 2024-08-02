@@ -24,8 +24,8 @@ export class CreateUserDto {
   @ApiProperty({
     minLength: 11,
     maxLength: 8,
-    default: '0912345678',
-    example: '0912345678',
+    default: '09123456789',
+    example: '09123456789',
     description: 'phone number must be started with 09...',
   })
   phoneNumber: string;
