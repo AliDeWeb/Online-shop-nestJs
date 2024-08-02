@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RequestLoggerMiddleware } from './middlewares/request-logger/request-logger.middleware';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RequestLoggerMiddleware } from './middlewares/request-logger/request-lo
     }),
     AuthModule,
     UsersModule,
+    ProductsModule,
   ],
 })
 export class AppModule implements NestModule {
