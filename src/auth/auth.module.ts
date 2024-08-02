@@ -8,6 +8,7 @@ import { AuthRepository } from './auth.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from 'src/users/users.module';
+import { ProtectedRouteGuard } from './guard/protectedRoute.guard';
 
 @Module({
   imports: [
@@ -19,10 +20,12 @@ import { UsersModule } from 'src/users/users.module';
         signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
       }),
       inject: [ConfigService],
+      global: true,
     }),
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthRepository],
+  providers: [AuthService, AuthRepository, ProtectedRouteGuard],
+  exports: [ProtectedRouteGuard],
 })
 export class AuthModule {}
