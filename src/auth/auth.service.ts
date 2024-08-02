@@ -21,19 +21,23 @@ export class AuthService {
   async createUser(
     createUserData: CreateUserDto,
   ): Promise<{ message: string; token: string }> {
-    const user = await this.AuthRepository.createUser(createUserData);
+    try {
+      let user = await this.AuthRepository.createUser(createUserData);
 
-    const payload = {
-      id: (user as any)._id,
-      phoneNumber: user.phoneNumber,
-    };
+      const payload = {
+        id: (user as any)._id,
+        phoneNumber: user.phoneNumber,
+      };
 
-    const token = await this.JwtService.signAsync(payload);
+      const token = await this.JwtService.signAsync(payload);
 
-    return {
-      message: `welcome, you signed up successfully as ${user.phoneNumber}`,
-      token,
-    };
+      return {
+        message: `welcome, you signed up successfully as ${user.phoneNumber}`,
+        token,
+      };
+    } catch (err) {
+      throw new BadRequestException('this user is already exist');
+    }
   }
 
   async loginUser(loginUserData: LoginUserDto) {
