@@ -50,10 +50,7 @@ export class ProductsController {
     description: 'authorization must be like `Bearer {{Token Here}}`',
     required: true,
   })
-  createProductDto(
-    @Body() productData: CreateProductDto,
-    @UploadedFile() file,
-  ) {
+  createProduct(@Body() productData: CreateProductDto, @UploadedFile() file) {
     productData.image = `uploads/images/products/${file.filename}`;
 
     return this.productsService.createProduct(productData);
