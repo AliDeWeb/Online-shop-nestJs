@@ -7,6 +7,7 @@ import { CreateProductDto } from './dtos/createProduct.dto';
 import { ProductsRepository } from './products.repository';
 import { Schema } from 'mongoose';
 import { deleteFile } from 'src/utilities/funcs/delete-file';
+import { UpdateProductDto } from './dtos/updateProduct.dto';
 
 @Injectable()
 export class ProductsService {
@@ -40,6 +41,30 @@ export class ProductsService {
     const product = await this.ProductsRepository.findProductById(id);
 
     if (!product) throw new NotFoundException('the product is not found');
+
+    return product;
+  }
+
+  async updateProduct(
+    id: Schema.Types.ObjectId,
+    productData: UpdateProductDto,
+  ) {
+    const prevProductData = await this.ProductsRepository.findProductById(id);
+
+    if (!prevProductData) throw new NotFoundException('product is not found');
+
+    const productImagesPath = prevProductData.images;
+
+    const product = await this.ProductsRepository.updateProduct(
+      id,
+      productData,
+    );
+
+    if (!product) throw new NotFoundException('the product is not found');
+
+    productImagesPath.forEach(async (el) => {
+      await deleteFile(`static/${el}`);
+    });
 
     return product;
   }
