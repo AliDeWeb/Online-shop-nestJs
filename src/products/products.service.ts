@@ -39,6 +39,8 @@ export class ProductsService {
   async findProductById(id: Schema.Types.ObjectId) {
     const product = await this.ProductsRepository.findProductById(id);
 
+    if (!product) throw new NotFoundException('the product is not found');
+
     return product;
   }
 }
