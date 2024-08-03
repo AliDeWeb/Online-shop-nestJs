@@ -5,7 +5,7 @@ import {
   HttpCode,
   Param,
   Post,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,7 +21,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { uploadProductImageMulterOptions } from 'src/helper/multerConfigs/uploadProductImage.config';
 import { Schema } from 'mongoose';
 
@@ -34,7 +34,9 @@ export class ProductsController {
   @UseGuards(ProtectedRouteGuard, RolesGuard)
   @Roles('admin')
   @Post('create-new-product')
-  @UseInterceptors(FileInterceptor('image', uploadProductImageMulterOptions))
+  @UseInterceptors(
+    FilesInterceptor('image', 10, uploadProductImageMulterOptions),
+  )
   @HttpCode(201)
   @ApiResponse({
     status: 201,
@@ -54,8 +56,13 @@ export class ProductsController {
     description: 'authorization must be like `Bearer {{Token Here}}`',
     required: true,
   })
-  createProduct(@Body() productData: CreateProductDto, @UploadedFile() file) {
-    productData.image = `uploads/images/products/${file.filename}`;
+  createProduct(
+    @Body() productData: CreateProductDto,
+    @UploadedFiles() files: any,
+  ) {
+    productData.images = files.map(
+      (file: any) => `uploads/images/products/${file.filename}`,
+    );
 
     return this.productsService.createProduct(productData);
   }

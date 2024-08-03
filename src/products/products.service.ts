@@ -23,13 +23,15 @@ export class ProductsService {
 
     if (!product) throw new NotFoundException('product is not found');
 
-    const productImagePath = `static/${product.image}`;
+    const productImagesPath = product.images;
 
     const result = await this.ProductsRepository.deleteProduct(id);
 
     if (!result) throw new BadRequestException('product does not exist');
 
-    await deleteFile(productImagePath);
+    productImagesPath.forEach(async (el) => {
+      await deleteFile(`static/${el}`);
+    });
 
     return result;
   }

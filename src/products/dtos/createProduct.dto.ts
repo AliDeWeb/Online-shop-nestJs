@@ -38,5 +38,5 @@ export class CreateProductDto {
     required: true,
     description: 'upload single image in types `jpg | jpeg | png`',
   })
-  image: string;
+  images: string[];
 }

@@ -15,10 +15,10 @@ export class Product {
   description: string;
 
   @Prop({
-    type: String,
+    type: [String],
     required: [true, 'the product must have a image'],
   })
-  image: string;
+  images: string[];
 
   @Prop({
     type: Number,
