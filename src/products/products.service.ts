@@ -35,4 +35,10 @@ export class ProductsService {
 
     return result;
   }
+
+  async findProductById(id: Schema.Types.ObjectId) {
+    const product = await this.ProductsRepository.findProductById(id);
+
+    return product;
+  }
 }

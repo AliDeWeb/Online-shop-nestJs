@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
@@ -26,7 +27,6 @@ import { uploadProductImageMulterOptions } from 'src/helper/multerConfigs/upload
 import { Schema } from 'mongoose';
 
 @ApiTags('Products')
-@ApiBearerAuth()
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -56,6 +56,7 @@ export class ProductsController {
     description: 'authorization must be like `Bearer {{Token Here}}`',
     required: true,
   })
+  @ApiBearerAuth()
   createProduct(
     @Body() productData: CreateProductDto,
     @UploadedFiles() files: any,
@@ -98,9 +99,29 @@ export class ProductsController {
     description: 'authorization must be like `Bearer {{Token Here}}`',
     required: true,
   })
+  @ApiBearerAuth()
   async deleteProduct(@Param('id') id: Schema.Types.ObjectId) {
     await this.productsService.deleteProduct(id);
 
     return 'product deleted successfully';
+  }
+
+  @Get('/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'response contains a success message',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'this error will happen if id is not valid',
+  })
+  @HttpCode(200)
+  @ApiParam({
+    name: 'product id',
+    required: true,
+    description: 'this parameter must be a valid product id',
+  })
+  async getProduct(@Param('id') id: Schema.Types.ObjectId) {
+    return await this.productsService.findProductById(id);
   }
 }
