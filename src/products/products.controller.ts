@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
+  Param,
   Post,
   UploadedFile,
   UseGuards,
@@ -15,11 +17,13 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import {
   ApiBearerAuth,
   ApiHeader,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { uploadProductImageMulterOptions } from 'src/helper/multerConfigs/uploadProductImage.config';
+import { Schema } from 'mongoose';
 
 @ApiTags('Products')
 @ApiBearerAuth()
@@ -54,5 +58,42 @@ export class ProductsController {
     productData.image = `uploads/images/products/${file.filename}`;
 
     return this.productsService.createProduct(productData);
+  }
+
+  @UseGuards(ProtectedRouteGuard, RolesGuard)
+  @Roles('admin')
+  @Delete('delete-product/:id')
+  @HttpCode(200)
+  @ApiParam({
+    name: 'product id',
+    required: true,
+    description: 'this parameter must be a valid product id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'response contains a success message',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'response contains a error message',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'response contains a error message',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'this error will happen if id is not valid',
+  })
+  @ApiHeader({
+    name: 'authorization',
+    example: 'Bearer {{Token Here}}',
+    description: 'authorization must be like `Bearer {{Token Here}}`',
+    required: true,
+  })
+  async deleteProduct(@Param('id') id: Schema.Types.ObjectId) {
+    await this.productsService.deleteProduct(id);
+
+    return 'product deleted successfully';
   }
 }
