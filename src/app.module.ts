@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { RequestLoggerMiddleware } from './middlewares/request-logger/request-logger.middleware';
 import { ProductsModule } from './products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { NewsletterModule } from './newsletter/newsletter.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     AuthModule,
     UsersModule,
     ProductsModule,
+    NewsletterModule,
   ],
 })
 export class AppModule implements NestModule {
