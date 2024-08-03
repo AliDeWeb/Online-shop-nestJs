@@ -7,6 +7,7 @@ import {
   Patch,
   Request,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ProtectedRouteGuard } from 'src/auth/guard/protectedRoute.guard';
@@ -20,9 +21,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { UserDto } from './dtos/user.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize/serialize.interceptors';
 
 @ApiTags('Users')
 @ApiBearerAuth()
+@UseInterceptors(new SerializeInterceptor(UserDto))
 @Controller('users')
 export class UsersController {
   constructor(private readonly UsersService: UsersService) {}
@@ -50,10 +54,6 @@ export class UsersController {
   })
   async getMe(@Request() request) {
     const user = await this.UsersService.findUserById(request.user.id);
-
-    user['updatedAt'] = undefined;
-    user['password'] = undefined;
-    user['__v'] = undefined;
 
     return user;
   }
@@ -88,10 +88,6 @@ export class UsersController {
   async getUserByPhoneNumber(@Param('phoneNumber') phoneNumber: string) {
     const user = await this.UsersService.findUserByPhoneNumber(phoneNumber);
 
-    user['updatedAt'] = undefined;
-    user['password'] = undefined;
-    user['__v'] = undefined;
-
     return user;
   }
 
@@ -125,10 +121,6 @@ export class UsersController {
   async getUserByEmail(@Param('email') email: string) {
     const user = await this.UsersService.findUserByEmail(email);
 
-    user['updatedAt'] = undefined;
-    user['password'] = undefined;
-    user['__v'] = undefined;
-
     return user;
   }
 
@@ -158,10 +150,6 @@ export class UsersController {
       request.user.id,
       UpdateUserData,
     );
-
-    user['updatedAt'] = undefined;
-    user['password'] = undefined;
-    user['__v'] = undefined;
 
     return user;
   }
