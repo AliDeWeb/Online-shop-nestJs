@@ -10,19 +10,28 @@ export class UserRepository {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
   async findUserById(id: Schema.Types.ObjectId): Promise<User | null> {
-    const user = this.userModel.findById(id);
+    const user = this.userModel.findById(id).exec();
 
     return user;
   }
 
   async findUserByPhoneNumber(phoneNumber: string): Promise<User | null> {
-    const user = this.userModel.findOne({ phoneNumber });
+    const user = this.userModel.findOne({ phoneNumber }).exec();
 
     return user;
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
-    const user = this.userModel.findOne({ email });
+    const user = this.userModel.findOne({ email }).exec();
+
+    return user;
+  }
+
+  async updateUserById(
+    id: Schema.Types.ObjectId,
+    attrs: Partial<User>,
+  ): Promise<User | null> {
+    const user = this.userModel.findByIdAndUpdate(id, attrs, { new: true }).exec();
 
     return user;
   }

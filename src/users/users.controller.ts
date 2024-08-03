@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   Param,
+  Patch,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -17,6 +19,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdateUserDto } from './dtos/updateUser.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -80,7 +83,7 @@ export class UsersController {
   @ApiParam({
     name: 'phoneNumber',
     required: true,
-    description: 'this parameter should be a valid phone number',
+    description: 'this parameter must be a valid phone number',
   })
   async getUserByPhoneNumber(@Param('phoneNumber') phoneNumber: string) {
     const user = await this.UsersService.findUserByPhoneNumber(phoneNumber);
@@ -117,10 +120,44 @@ export class UsersController {
   @ApiParam({
     name: 'email',
     required: true,
-    description: 'this parameter should be a valid email',
+    description: 'this parameter must be a valid email',
   })
   async getUserByEmail(@Param('email') email: string) {
     const user = await this.UsersService.findUserByEmail(email);
+
+    user['updatedAt'] = undefined;
+    user['password'] = undefined;
+    user['__v'] = undefined;
+
+    return user;
+  }
+
+  @UseGuards(ProtectedRouteGuard)
+  @Patch('me')
+  @HttpCode(201)
+  @ApiResponse({
+    status: 201,
+    description: 'response contains user data witch are not sensitive',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'response contains a error message',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'response contains a error message',
+  })
+  @ApiHeader({
+    name: 'authorization',
+    example: 'Bearer {{Token Here}}',
+    description: 'authorization must be like `Bearer {{Token Here}}`',
+    required: true,
+  })
+  async updateMe(@Body() UpdateUserData: UpdateUserDto, @Request() request) {
+    const user = await this.UsersService.updateMe(
+      request.user.id,
+      UpdateUserData,
+    );
 
     user['updatedAt'] = undefined;
     user['password'] = undefined;

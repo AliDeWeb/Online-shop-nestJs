@@ -43,4 +43,12 @@ export class UsersService {
 
     return user;
   }
+
+  async updateMe(id: Schema.Types.ObjectId, attrs: Partial<User>) {
+    const updatedUser = await this.UserRepository.updateUserById(id, attrs);
+
+    if (!updatedUser) throw new BadRequestException('id is not valid');
+
+    return updatedUser;
+  }
 }
