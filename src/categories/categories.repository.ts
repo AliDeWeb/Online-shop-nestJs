@@ -19,4 +19,8 @@ export class categoryRepository {
   async deleteCategory(categoryId: Schema.Types.ObjectId) {
     return await this.CategoryModel.findByIdAndDelete(categoryId).exec();
   }
+
+  findAllCategories() {
+    return this.CategoryModel.find();
+  }
 }

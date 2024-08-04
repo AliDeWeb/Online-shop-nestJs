@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
@@ -12,7 +13,13 @@ import { CreateCategoryDto } from './dtos/createCategory.dto';
 import { ProtectedRouteGuard } from '../auth/guard/protectedRoute.guard';
 import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Schema } from 'mongoose';
 
 @ApiTags('categories')
@@ -20,9 +27,20 @@ import { Schema } from 'mongoose';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @Get('all')
+  @HttpCode(200)
+  @ApiResponse({
+    status: 200,
+    description: 'response contains all categories data',
+  })
+  async getAllCategories() {
+    return this.categoriesService.findAllCategories();
+  }
+
   @UseGuards(ProtectedRouteGuard, RolesGuard)
   @Roles('admin')
   @Post('create')
+  @ApiBearerAuth()
   @HttpCode(201)
   @ApiResponse({
     status: 201,
@@ -52,6 +70,7 @@ export class CategoriesController {
   @UseGuards(ProtectedRouteGuard, RolesGuard)
   @Roles('admin')
   @Delete('delete/:id')
+  @ApiBearerAuth()
   @HttpCode(201)
   @ApiResponse({
     status: 201,

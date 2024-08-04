@@ -20,4 +20,11 @@ export class CategoriesService {
 
     return deletedCategory;
   }
+
+  async findAllCategories() {
+    return await this.categoryRepository
+      .findAllCategories()
+      .populate('products')
+      .exec();
+  }
 }
