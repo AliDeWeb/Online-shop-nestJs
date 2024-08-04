@@ -7,6 +7,7 @@ import { RequestLoggerMiddleware } from './middlewares/request-logger/request-lo
 import { ProductsModule } from './products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { NewsletterModule } from './newsletter/newsletter.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { NewsletterModule } from './newsletter/newsletter.module';
     UsersModule,
     ProductsModule,
     NewsletterModule,
+    CategoriesModule,
   ],
 })
 export class AppModule implements NestModule {

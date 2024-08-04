@@ -10,11 +10,15 @@ export class Category {
   @Prop({
     type: String,
     required: [true, 'provide a title for category'],
+    unique: true,
   })
   title: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
+
+// Indexes
+CategorySchema.index({ title: 1 }, { unique: true });
 
 // Virtual Properties
 CategorySchema.virtual('products', {
