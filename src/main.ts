@@ -2,20 +2,34 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as basicAuth from 'express-basic-auth';
+
+const SWAGGER_ENVS = ['local', 'dev'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Beauty-House')
-    .setDescription('Beauty House NestJs API Docs ;)')
-    .setVersion('1.0.0')
-    .build();
+  if (SWAGGER_ENVS.includes(process.env.NODE_ENV)) {
+    app.use(
+      ['/docs', '/docs-json'],
+      basicAuth({
+        challenge: true,
+        users: {
+          [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+        },
+      }),
+    );
 
-  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+    const config = new DocumentBuilder()
+      .setTitle('API Docs')
+      .setDescription('The API documentation')
+      .setVersion('1.0')
+      .build();
 
-  SwaggerModule.setup('docs', app, swaggerDocument);
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('docs', app, document);
+  }
 
   await app.listen(3000);
 }

@@ -22,10 +22,17 @@ Enjoy using ❤
 ## Environment Variables
 
 ```env
+<!-- Just Use [ 'local' || 'dev' || 'production' ] -->
+NODE_ENV={{Set Node Env}}
+
 DATABASE={{Database Url}}
 
-JWT_SECRET={{JWT secret code}}
-JWT_EXPIRES_IN={{JWT expire time}}
+JWT_SECRET={{JWT Secret Code}}
+JWT_EXPIRES_IN={{JWT Expire Time}}
+
+<!-- To Access Swagger API Document -->
+SWAGGER_USER={{Set A Username}}
+SWAGGER_PASSWORD={{Set A Password}}
 ```
 
 ## Running the app
