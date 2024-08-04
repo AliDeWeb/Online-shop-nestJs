@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import {
   Category,
   CategoryDocument,
@@ -14,5 +14,9 @@ export class categoryRepository {
 
   async createCategory(categoryData: CreateCategoryDto) {
     return await this.CategoryModel.create(categoryData);
+  }
+
+  async deleteCategory(categoryId: Schema.Types.ObjectId) {
+    return await this.CategoryModel.findByIdAndDelete(categoryId).exec();
   }
 }

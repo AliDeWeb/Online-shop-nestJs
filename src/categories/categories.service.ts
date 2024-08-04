@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { categoryRepository } from './categories.repository';
 import { CreateCategoryDto } from './dtos/createCategory.dto';
+import { Schema } from 'mongoose';
 
 @Injectable()
 export class CategoriesService {
@@ -8,5 +9,15 @@ export class CategoriesService {
 
   async createCategory(categoryData: CreateCategoryDto) {
     return await this.categoryRepository.createCategory(categoryData);
+  }
+
+  async deleteCategory(categoryId: Schema.Types.ObjectId) {
+    const deletedCategory =
+      await this.categoryRepository.deleteCategory(categoryId);
+
+    if (!deletedCategory)
+      throw new BadRequestException('category is not found');
+
+    return deletedCategory;
   }
 }
