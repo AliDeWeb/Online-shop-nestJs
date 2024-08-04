@@ -20,8 +20,13 @@ export class ProductsRepository {
     return await this.productModel.findById(id).exec();
   }
 
-  async updateProduct(id: Schema.Types.ObjectId, productData: UpdateProductDto): Promise<Product | null> {
-    return await this.productModel.findByIdAndUpdate(id, productData, {new: true}).exec();
+  async updateProduct(
+    id: Schema.Types.ObjectId,
+    productData: UpdateProductDto,
+  ): Promise<Product | null> {
+    return await this.productModel
+      .findByIdAndUpdate(id, productData, { new: true })
+      .exec();
   }
 
   async deleteProduct(id: Schema.Types.ObjectId): Promise<Product> {

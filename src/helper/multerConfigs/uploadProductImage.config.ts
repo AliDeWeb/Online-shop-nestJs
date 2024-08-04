@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import multer, { diskStorage } from 'multer';
+import { diskStorage } from 'multer';
 
 const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const maxFileSize = 1 * 1024 * 1024;

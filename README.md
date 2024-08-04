@@ -6,7 +6,8 @@
 
 ## Description
 
-This project is developed by [AliDeWeb](https://github.com/AliDeWeb) based on [NestJs](https://github.com/nestjs/nest) framework.
+This project is developed by [AliDeWeb](https://github.com/AliDeWeb) based on [NestJs](https://github.com/nestjs/nest)
+framework.
 This project is open source and under [MIT licensed](LICENSE).
 Enjoy using ❤
 

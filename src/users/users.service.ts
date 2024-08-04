@@ -8,6 +8,7 @@ import { emailValidator } from 'src/utilities/regex/emailRegex';
 @Injectable()
 export class UsersService {
   constructor(private readonly UserRepository: UserRepository) {}
+
   async findUserById(id: Schema.Types.ObjectId): Promise<User | null> {
     const user = await this.UserRepository.findUserById(id);
 

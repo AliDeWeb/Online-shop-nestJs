@@ -1,7 +1,4 @@
-import {
-  UnauthorizedException,
-  Injectable,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -21,7 +18,7 @@ export class AuthService {
     createUserData: CreateUserDto,
   ): Promise<{ message: string; token: string }> {
     try {
-      let user = await this.AuthRepository.createUser(createUserData);
+      const user = await this.AuthRepository.createUser(createUserData);
 
       const payload = {
         id: (user as any)._id,

@@ -1,9 +1,9 @@
 import {
   IsEmail,
-  IsString,
   IsOptional,
-  MinLength,
+  IsString,
   Matches,
+  MinLength,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { iranPhoneNumberValidator } from 'src/utilities/regex/phoneNumbersRegex';
