@@ -17,7 +17,11 @@ export class ProductsRepository {
   }
 
   async findProductById(id: Schema.Types.ObjectId): Promise<Product | null> {
-    return await this.productModel.findById(id).populate('category').exec();
+    return await this.productModel
+      .findById(id)
+      .populate('category')
+      .select('-__v')
+      .exec();
   }
 
   async updateProduct(

@@ -21,10 +21,12 @@ export class categoryRepository {
   }
 
   async findAllCategories() {
-    return await this.CategoryModel.find().populate('products');
+    return await this.CategoryModel.find().populate('products').select('-__v');
   }
 
   async findCategoryById(id: Schema.Types.ObjectId) {
-    return await this.CategoryModel.findById(id).populate('products');
+    return await this.CategoryModel.findById(id)
+      .populate('products')
+      .select('-__v');
   }
 }
