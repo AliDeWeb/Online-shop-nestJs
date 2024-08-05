@@ -4,6 +4,7 @@ import { Model, Schema } from 'mongoose';
 import { Product, ProductDocument } from 'src/schemas/product/product.schema';
 import { CreateProductDto } from './dtos/createProduct.dto';
 import { UpdateProductDto } from './dtos/updateProduct.dto';
+import ApiFeatures from 'src/utilities/apis/apiFeatures';
 
 @Injectable()
 export class ProductsRepository {
@@ -14,6 +15,17 @@ export class ProductsRepository {
 
   async createProduct(productData: CreateProductDto): Promise<Product> {
     return await this.productModel.create(productData);
+  }
+
+  async findAllProducts(queryObj: any): Promise<Product | null> {
+    const query = new ApiFeatures(this.productModel.find(), queryObj)
+      .filter()
+      .sort()
+      .fields()
+      .paginate()
+      .getQuery();
+
+    return await query;
   }
 
   async findProductById(id: Schema.Types.ObjectId): Promise<Product | null> {

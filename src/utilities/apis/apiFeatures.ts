@@ -59,3 +59,5 @@ export class ApiFeatures {
     return this.query;
   }
 }
+
+export default ApiFeatures;

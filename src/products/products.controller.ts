@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -167,5 +168,15 @@ export class ProductsController {
   })
   async getProduct(@Param('id') id: Schema.Types.ObjectId) {
     return await this.productsService.findProductById(id);
+  }
+
+  @Get('')
+  @ApiResponse({
+    status: 200,
+    description: 'response contains a success message',
+  })
+  @HttpCode(200)
+  async getAllProducts(@Query() query) {
+    return await this.productsService.findAllProducts(query);
   }
 }

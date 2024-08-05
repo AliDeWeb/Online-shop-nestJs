@@ -37,6 +37,12 @@ export class ProductsService {
     return result;
   }
 
+  async findAllProducts(queryObj: any) {
+    const allProducts = await this.ProductsRepository.findAllProducts(queryObj);
+
+    return allProducts;
+  }
+
   async findProductById(id: Schema.Types.ObjectId) {
     const product = await this.ProductsRepository.findProductById(id);
 
