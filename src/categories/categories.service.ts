@@ -22,9 +22,10 @@ export class CategoriesService {
   }
 
   async findAllCategories() {
-    return await this.categoryRepository
+    const query = this.categoryRepository
       .findAllCategories()
-      .populate('products')
-      .exec();
+      .populate('products');
+
+    return await query.exec();
   }
 }

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString, MinLength } from 'class-validator';
+import { Schema } from 'mongoose';
 
 export class CreateProductDto {
   @IsString({ message: 'title must be a string' })
@@ -32,6 +33,12 @@ export class CreateProductDto {
     example: 60.9,
   })
   price: number;
+
+  @IsString({ message: 'description must be a string' })
+  @ApiProperty({
+    description: 'must be a valid category id',
+  })
+  category: Schema.Types.ObjectId;
 
   @ApiProperty({
     type: File,

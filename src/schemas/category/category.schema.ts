@@ -22,7 +22,7 @@ CategorySchema.index({ title: 1 }, { unique: true });
 
 // Virtual Properties
 CategorySchema.virtual('products', {
-  ref: Product.name,
+  ref: () => Product.name,
   localField: '_id',
   foreignField: 'category',
 });

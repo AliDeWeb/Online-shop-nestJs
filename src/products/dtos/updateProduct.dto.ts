@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
+import { Schema } from 'mongoose';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -35,6 +36,10 @@ export class UpdateProductDto {
     example: 60.9,
   })
   price: number;
+
+  @IsString({ message: 'description must be a string' })
+  @IsOptional()
+  category: Schema.Types.ObjectId;
 
   @ApiProperty({
     type: File,
