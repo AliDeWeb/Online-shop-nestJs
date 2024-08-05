@@ -10,6 +10,7 @@ const SWAGGER_ENVS = ['local', 'dev'];
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   if (SWAGGER_ENVS.includes(process.env.NODE_ENV)) {
