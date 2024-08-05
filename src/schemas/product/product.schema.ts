@@ -36,10 +36,3 @@ export class Product {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
-
-// Middleware
-ProductSchema.pre<ProductDocument>(/^find/, function (next) {
-  this.populate('category');
-
-  next();
-});
