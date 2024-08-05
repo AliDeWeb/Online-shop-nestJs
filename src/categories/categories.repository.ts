@@ -23,4 +23,8 @@ export class categoryRepository {
   async findAllCategories() {
     return await this.CategoryModel.find().populate('products');
   }
+
+  async findCategoryById(id: Schema.Types.ObjectId) {
+    return await this.CategoryModel.findById(id).populate('products');
+  }
 }

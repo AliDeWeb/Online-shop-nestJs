@@ -24,4 +24,8 @@ export class CategoriesService {
   async findAllCategories() {
     return await this.categoryRepository.findAllCategories();
   }
+
+  async findCategoryById(id: Schema.Types.ObjectId) {
+    return await this.categoryRepository.findCategoryById(id);
+  }
 }

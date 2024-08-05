@@ -37,6 +37,20 @@ export class CategoriesController {
     return this.categoriesService.findAllCategories();
   }
 
+  @Get(':id')
+  @HttpCode(200)
+  @ApiResponse({
+    status: 200,
+    description: 'response contains category data',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'invalid category Id',
+  })
+  async getCategory(@Param('id') id: Schema.Types.ObjectId) {
+    return this.categoriesService.findCategoryById(id);
+  }
+
   @UseGuards(ProtectedRouteGuard, RolesGuard)
   @Roles('admin')
   @Post('create')
