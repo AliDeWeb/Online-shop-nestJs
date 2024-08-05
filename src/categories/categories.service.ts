@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { categoryRepository } from './categories.repository';
 import { CreateCategoryDto } from './dtos/createCategory.dto';
 import { Schema } from 'mongoose';
@@ -26,6 +30,10 @@ export class CategoriesService {
   }
 
   async findCategoryById(id: Schema.Types.ObjectId) {
-    return await this.categoryRepository.findCategoryById(id);
+    const category = await this.categoryRepository.findCategoryById(id);
+
+    if (!category) throw new NotFoundException('the category is not found');
+
+    return category;
   }
 }
