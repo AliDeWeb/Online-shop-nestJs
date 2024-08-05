@@ -8,6 +8,7 @@ import { ProductsModule } from './products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { NewsletterModule } from './newsletter/newsletter.module';
 import { CategoriesModule } from './categories/categories.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CategoriesModule } from './categories/categories.module';
     ProductsModule,
     NewsletterModule,
     CategoriesModule,
+    OrdersModule,
   ],
 })
 export class AppModule implements NestModule {
