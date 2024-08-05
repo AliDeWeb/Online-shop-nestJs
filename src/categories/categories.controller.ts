@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dtos/createCategory.dto';
@@ -22,8 +21,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Schema } from 'mongoose';
-import { SerializeInterceptor } from '../interceptors/serialize/serialize.interceptors';
-import { categoryDto } from './dtos/category.dto';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -31,7 +28,6 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get('all')
-  @UseInterceptors(new SerializeInterceptor(categoryDto))
   @HttpCode(200)
   @ApiResponse({
     status: 200,

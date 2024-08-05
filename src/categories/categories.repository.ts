@@ -20,7 +20,7 @@ export class categoryRepository {
     return await this.CategoryModel.findByIdAndDelete(categoryId).exec();
   }
 
-  findAllCategories() {
-    return this.CategoryModel.find();
+  async findAllCategories() {
+    return await this.CategoryModel.find().populate('products');
   }
 }

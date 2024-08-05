@@ -21,6 +21,9 @@ export const CategorySchema = SchemaFactory.createForClass(Category);
 CategorySchema.index({ title: 1 }, { unique: true });
 
 // Virtual Properties
+CategorySchema.set('toJSON', { virtuals: true });
+CategorySchema.set('toObject', { virtuals: true });
+
 CategorySchema.virtual('products', {
   ref: () => Product.name,
   localField: '_id',
