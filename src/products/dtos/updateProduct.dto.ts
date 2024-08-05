@@ -37,7 +37,10 @@ export class UpdateProductDto {
   })
   price: number;
 
-  @IsString({ message: 'description must be a string' })
+  @IsString({ message: 'category must be a string' })
+  @ApiProperty({
+    description: 'must be a valid category id',
+  })
   @IsOptional()
   category: Schema.Types.ObjectId;
 
