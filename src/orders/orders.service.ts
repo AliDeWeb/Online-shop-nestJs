@@ -20,4 +20,10 @@ export class OrdersService {
 
     return newProduct;
   }
+
+  async getAllOrders(queryObj: any) {
+    const orders = await this.OrdersRepository.getAllOrders(queryObj);
+
+    return orders;
+  }
 }

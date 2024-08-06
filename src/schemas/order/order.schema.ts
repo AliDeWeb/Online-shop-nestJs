@@ -45,3 +45,9 @@ export class Order {
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+
+// Middlewares
+OrderSchema.pre<OrderDocument>(/^find/, function () {
+  this.populate({ path: 'user', select: 'name _id phoneNumber' });
+  this.populate({ path: 'products.product', select: 'title _id price images' });
+});
