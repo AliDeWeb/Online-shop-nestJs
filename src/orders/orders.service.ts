@@ -2,6 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { OrdersRepository } from './orders.repository';
 import { CreateOrdersDto } from './dtos/createOrder.dto';
 import { Schema } from 'mongoose';
+import {
+  orderStatus,
+  orderStatusEnum,
+} from 'src/utilities/types/orderStatus.type';
 
 @Injectable()
 export class OrdersService {
@@ -25,5 +29,14 @@ export class OrdersService {
     const orders = await this.OrdersRepository.getAllOrders(queryObj);
 
     return orders;
+  }
+
+  async updateOrderStatus(id: Schema.Types.ObjectId, status: orderStatus) {
+    if (!orderStatusEnum.includes(status))
+      throw new BadRequestException(
+        `${status} is not allowed as a product status`,
+      );
+
+    return await this.OrdersRepository.updateOrderStatus(id, status);
   }
 }

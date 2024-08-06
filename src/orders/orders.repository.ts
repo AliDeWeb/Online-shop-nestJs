@@ -1,8 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { Order, OrderDocument } from 'src/schemas/order/order.schema';
 import { CreateOrdersDto } from './dtos/createOrder.dto';
 import ApiFeatures from 'src/utilities/apis/apiFeatures';
+import { orderStatus } from 'src/utilities/types/orderStatus.type';
 
 export class OrdersRepository {
   constructor(
@@ -24,5 +25,13 @@ export class OrdersRepository {
       .getQuery();
 
     return query;
+  }
+
+  async updateOrderStatus(id: Schema.Types.ObjectId, status: orderStatus) {
+    return await this.orderModel.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true },
+    );
   }
 }

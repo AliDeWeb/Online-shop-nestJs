@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
+  Patch,
   Post,
   Query,
   Request,
@@ -14,6 +16,8 @@ import { ProtectedRouteGuard } from 'src/auth/guard/protectedRoute.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Schema } from 'mongoose';
+import { UpdateOrderStatusDto } from './dtos/updateOrderStatus.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -42,6 +46,19 @@ export class OrdersController {
   @ApiResponse({ status: 403, description: 'contains a error message' })
   async getAllOrders(@Query() query) {
     const orders = await this.ordersService.getAllOrders(query);
+
+    return orders;
+  }
+
+  @UseGuards(ProtectedRouteGuard, RolesGuard)
+  @Roles('admin')
+  @Patch('status/:id')
+  @HttpCode(201)
+  @ApiResponse({ status: 201, description: 'contains a message' })
+  @ApiResponse({ status: 400, description: 'contains a error message' })
+  @ApiResponse({ status: 403, description: 'contains a error message' })
+  async updateOrderStatus(@Param('id') id: Schema.Types.ObjectId, @Body() body: UpdateOrderStatusDto) {
+    const orders = await this.ordersService.updateOrderStatus(id, body.status);
 
     return orders;
   }
