@@ -9,7 +9,7 @@ import {
 
 export type OrderDocument = HydratedDocument<Order>;
 
-class OrderProduct {
+export class OrderProduct {
   @Prop({ type: Number })
   count: number;
 

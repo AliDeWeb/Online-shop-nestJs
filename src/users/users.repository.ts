@@ -10,19 +10,37 @@ export class UserRepository {
   ) {}
 
   async findUserById(id: Schema.Types.ObjectId): Promise<User | null> {
-    const user = this.userModel.findById(id).exec();
+    const user = this.userModel
+      .findById(id)
+      .populate({
+        path: 'orders',
+        select: '-user -__v',
+      })
+      .exec();
 
     return user;
   }
 
   async findUserByPhoneNumber(phoneNumber: string): Promise<User | null> {
-    const user = this.userModel.findOne({ phoneNumber }).exec();
+    const user = this.userModel
+      .findOne({ phoneNumber })
+      .populate({
+        path: 'orders',
+        select: '-user -__v',
+      })
+      .exec();
 
     return user;
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
-    const user = this.userModel.findOne({ email }).exec();
+    const user = this.userModel
+      .findOne({ email })
+      .populate({
+        path: 'orders',
+        select: '-user -__v',
+      })
+      .exec();
 
     return user;
   }

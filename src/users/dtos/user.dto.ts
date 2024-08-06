@@ -1,5 +1,26 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { ProductDocument } from 'src/schemas/product/product.schema';
 import { userRolesType } from 'src/utilities/types/userRoles.type';
+
+export class OrderProductDto {
+  @Expose()
+  count: number;
+
+  @Expose()
+  product: ProductDocument;
+}
+
+export class OrderDto {
+  @Expose()
+  status: string;
+
+  @Expose()
+  @Type(() => OrderProductDto)
+  products: OrderProductDto[];
+
+  @Expose()
+  _id: string;
+}
 
 export class UserDto {
   @Expose()
@@ -16,4 +37,8 @@ export class UserDto {
 
   @Expose()
   createdAt: Date;
+
+  @Expose()
+  @Type(() => OrderDto)
+  orders: OrderDto[];
 }

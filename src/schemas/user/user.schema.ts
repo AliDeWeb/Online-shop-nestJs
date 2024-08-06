@@ -50,3 +50,13 @@ UserSchema.pre<UserDocument>(`save`, async function (next) {
 // Indexes
 UserSchema.index({ phoneNumber: 1 }, { unique: true });
 UserSchema.index({ email: 1 }, { unique: true });
+
+// Virtual Properties
+UserSchema.set('toJSON', { virtuals: true });
+UserSchema.set('toObject', { virtuals: true });
+
+UserSchema.virtual('orders', {
+  ref: 'Order',
+  localField: '_id',
+  foreignField: 'user',
+});
