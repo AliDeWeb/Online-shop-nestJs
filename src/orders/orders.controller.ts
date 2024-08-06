@@ -13,7 +13,13 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrdersDto } from './dtos/createOrder.dto';
 import { ProtectedRouteGuard } from 'src/auth/guard/protectedRoute.guard';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Schema } from 'mongoose';
@@ -22,6 +28,12 @@ import { UpdateOrderStatusDto } from './dtos/updateOrderStatus.dto';
 @ApiTags('Orders')
 @Controller('orders')
 @ApiBearerAuth()
+@ApiHeader({
+  name: 'authorization',
+  example: 'Bearer {{Token Here}}',
+  description: 'authorization must be like `Bearer {{Token Here}}`',
+  required: true,
+})
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
@@ -57,7 +69,14 @@ export class OrdersController {
   @ApiResponse({ status: 201, description: 'contains a message' })
   @ApiResponse({ status: 400, description: 'contains a error message' })
   @ApiResponse({ status: 403, description: 'contains a error message' })
-  async updateOrderStatus(@Param('id') id: Schema.Types.ObjectId, @Body() body: UpdateOrderStatusDto) {
+  @ApiParam({
+    name: 'order id',
+    description: 'this must be a valid order id',
+  })
+  async updateOrderStatus(
+    @Param('id') id: Schema.Types.ObjectId,
+    @Body() body: UpdateOrderStatusDto,
+  ) {
     const orders = await this.ordersService.updateOrderStatus(id, body.status);
 
     return orders;
