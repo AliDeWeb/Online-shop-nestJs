@@ -15,10 +15,21 @@ class OrderProduct {
 
 @Schema()
 export class Order {
-  @Prop({ type: mongooseSchema.Types.ObjectId, ref: User.name })
+  @Prop({
+    type: mongooseSchema.Types.ObjectId,
+    ref: User.name,
+    required: [true, 'user is required'],
+  })
   user: mongooseSchema.Types.ObjectId;
 
+  @Prop({ type: String, required: [true, 'address is required'] })
+  address: string;
+
+  @Prop({ type: String, default: 'review' })
+  status: string;
+
   @Prop({
+    required: [true, 'products is required'],
     type: [OrderProduct],
     ref: Product.name,
   })
