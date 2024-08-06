@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
-import * as csurf from 'csurf';
+// import * as csurf from 'csurf';
 import helmet from 'helmet';
 
 const SWAGGER_ENVS = ['local', 'dev'];
@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.enableCors();
-  app.use(csurf());
+  // app.use(csurf());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   if (SWAGGER_ENVS.includes(process.env.NODE_ENV)) {

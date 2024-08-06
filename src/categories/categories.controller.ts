@@ -22,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { Schema } from 'mongoose';
 
-@ApiTags('categories')
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
