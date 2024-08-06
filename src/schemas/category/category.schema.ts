@@ -2,6 +2,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { Product } from '../product/product.schema';
+import { Transform } from 'class-transformer';
 
 export type CategoryDocument = HydratedDocument<Category>;
 
@@ -12,6 +13,7 @@ export class Category {
     required: [true, 'provide a title for category'],
     unique: true,
   })
+  @Transform(({ value }) => value.trim().toLowerCase())
   title: string;
 }
 
