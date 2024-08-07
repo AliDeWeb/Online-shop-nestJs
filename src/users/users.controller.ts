@@ -23,6 +23,8 @@ import {
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UserDto } from './dtos/user.dto';
 import { SerializeInterceptor } from 'src/interceptors/serialize/serialize.interceptors';
+import { Schema } from 'mongoose';
+import { updateUserRoleDto } from './dtos/updateUserRole.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -152,5 +154,41 @@ export class UsersController {
     );
 
     return user;
+  }
+
+  @UseGuards(ProtectedRouteGuard, RolesGuard)
+  @Roles('admin')
+  @Patch('role/:id')
+  @ApiHeader({
+    name: 'authorization',
+    example: 'Bearer {{Token Here}}',
+    description: 'authorization must be like `Bearer {{Token Here}}`',
+    required: true,
+  })
+  @ApiParam({
+    name: 'user id',
+    required: true,
+    description: 'this parameter must be a valid user id',
+  })
+  @HttpCode(201)
+  @ApiResponse({
+    status: 201,
+    description: 'response contains user data witch are not sensitive',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'response contains a error message',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'response contains a error message',
+  })
+  async updateUserRole(
+    @Param('id') id: Schema.Types.ObjectId,
+    @Body() body: updateUserRoleDto,
+  ) {
+    await this.UsersService.updateUserRole(id, body.role);
+
+    return `user role updated successfully to ${body.role}`;
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user/user.schema';
+import { userRolesType } from 'src/utilities/types/userRoles.type';
 
 @Injectable()
 export class UserRepository {
@@ -54,5 +55,15 @@ export class UserRepository {
       .exec();
 
     return user;
+  }
+
+  async updateUserRole(id: Schema.Types.ObjectId, role: userRolesType) {
+    const newUserInfo = this.userModel.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true },
+    );
+
+    return newUserInfo;
   }
 }

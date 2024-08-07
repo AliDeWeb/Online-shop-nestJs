@@ -4,6 +4,10 @@ import { User } from 'src/schemas/user/user.schema';
 import { Schema } from 'mongoose';
 import { iranPhoneNumberValidator } from 'src/utilities/regex/phoneNumbersRegex';
 import { emailValidator } from 'src/utilities/regex/emailRegex';
+import {
+  userRolesEnum,
+  userRolesType,
+} from 'src/utilities/types/userRoles.type';
 
 @Injectable()
 export class UsersService {
@@ -51,5 +55,16 @@ export class UsersService {
     if (!updatedUser) throw new BadRequestException('id is not valid');
 
     return updatedUser;
+  }
+
+  async updateUserRole(id: Schema.Types.ObjectId, role: userRolesType) {
+    const newUserInfo = this.UserRepository.updateUserRole(id, role);
+
+    if (!userRolesEnum.includes(role))
+      throw new BadRequestException(`${role} is not allowed`);
+
+    if (!newUserInfo) throw new BadRequestException('id is not valid');
+
+    return newUserInfo;
   }
 }
