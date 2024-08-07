@@ -28,10 +28,12 @@ export class OrdersRepository {
   }
 
   async updateOrderStatus(id: Schema.Types.ObjectId, status: orderStatus) {
-    return await this.orderModel.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true },
-    );
+    return await this.orderModel
+      .findByIdAndUpdate(id, { status }, { new: true })
+      .exec();
+  }
+
+  async getOrderInfo(id: Schema.Types.ObjectId) {
+    return await this.orderModel.findById(id).exec();
   }
 }

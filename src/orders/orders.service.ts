@@ -37,6 +37,21 @@ export class OrdersService {
         `${status} is not allowed as a product status`,
       );
 
-    return await this.OrdersRepository.updateOrderStatus(id, status);
+    const newOrderInfo = await this.OrdersRepository.updateOrderStatus(
+      id,
+      status,
+    );
+
+    if (!newOrderInfo) throw new BadRequestException('Order is not found');
+
+    return newOrderInfo;
+  }
+
+  async getOrderInfo(id: Schema.Types.ObjectId) {
+    const order = await this.OrdersRepository.getOrderInfo(id);
+
+    if (!order) throw new BadRequestException('Order is not found');
+
+    return order;
   }
 }

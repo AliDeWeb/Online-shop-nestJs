@@ -81,4 +81,21 @@ export class OrdersController {
 
     return orders;
   }
+
+  @UseGuards(ProtectedRouteGuard, RolesGuard)
+  @Roles('admin')
+  @Get('/:id')
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'contains a message' })
+  @ApiResponse({ status: 400, description: 'contains a error message' })
+  @ApiResponse({ status: 403, description: 'contains a error message' })
+  @ApiParam({
+    name: 'order id',
+    description: 'this must be a valid order id',
+  })
+  async getOrderInfo(@Param('id') id: Schema.Types.ObjectId) {
+    const orders = await this.ordersService.getOrderInfo(id);
+
+    return orders;
+  }
 }
